@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/styles2.css" />
+    <title><%= breadcrumbs[breadcrumbs.length-1]%></title>
+</head>
+<body>
+    <div class="topnav">
+        <a class="inactive"> OSF Shop </a>
+        <div class="menu" >
+            <a href="/shop/mens">Mens</a>
+            <a href="/shop/womens">Womens</a>
+        </div>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <% _.each(breadcrumbs, function(item, idx) { %>
+                <% const temp = breadcrumbs.slice(0,idx+1).join('/')%>
+                <li><a href="/shop/<%=temp%>"><%=item%></a></li>
+            <% }); %>
+        </ul>
+    </div>
+    <div>
+        <h3>Total count of items in category : <%= items.length%></h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum similique nam autem fuga, exercitationem explicabo accusamus maxime inventore aliquam magni!</p>
+    </div>
+    <div>
+        <ul>
+            <% _.each(items, function(item) { %>
+            <li >
+                <a 
+                href="/shop/<%=breadcrumbs.join('/')%>/<%=item.id%>"
+                ><%= item.name %></a>
+                                
+                <p><%= item.short_description %></p>
+                <h3><%=item.price%></h3>
+                <hr></hr>
+            </li>
+            <% }); %>                    
+        </ul>
+    </div>
+    
+</body>
+</html>

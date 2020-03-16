@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/styles2.css" />
+    <title><%=item.page_title%></title>
+</head>
+<body>
+    <div class="topnav">
+        <a class="inactive"> OSF Shop </a>
+        <div class="menu" >
+            <a href="/shop/mens">Mens</a>
+            <a href="/shop/womens">Womens</a>
+        </div>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <% _.each(breadcrumbs, function(item, idx) { %>
+                <% const addr = breadcrumbs.slice(0,idx+1).join('/')%>
+                <li><a href="/shop/<%=addr%>"><%=item%></a></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <p>Yes - finaly - trading item! with the name of <%=item.name%></p>
+</body>
+</html>

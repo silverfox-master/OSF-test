@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title><%= items.name %></title>
+        
+    	<link rel="stylesheet" href="/stylesheets/styles2.css" />
+  	</head>
+  	
+  	<body>
+        <div class="topnav">
+            <a class="inactive"> OSF Shop </a>
+            <div class="menu" >
+                <a href="/shop/mens">Mens</a>
+                <a href="/shop/womens">Womens</a>
+            </div>
+        </div> 
+        <div>
+            <ul class="breadcrumb">
+                <% _.each(breadcrumbs, function(item, idx) { %>
+                    <% const temp = breadcrumbs.slice(0,idx+1).join('/')%>
+                    <li><a href="/shop/<%=temp%>"><%=item%></a></li>
+                <% }); %>
+            </ul>
+        </div>
+             
+    	<div class="main_body">
+            <h1><%= items.name %></h1>
+            <p><%= items.page_description %></p>
+            <div>
+                <ul>
+                    <% _.each(items.categories, function(subC) { %>
+                    <li>
+                        <h2><%= subC.name %></h1>
+                        
+                        <% if (subC.image) { %>
+                        <div>
+                            <img src="/images/<%= subC.image %>">
+                        </div>
+                        <% } %>
+                        <p><%= subC.page_description %></p>
+                        <% if (subC.categories) { %>
+                            <a href="/shop/<%= items.id%>/<%= subC.id %>">View Categories</a>
+                        <% } else { %>
+                            <a href="/shop/<%= items.parent_category_id%>/<%= items.id%>/<%= subC.id %>">View Products</a>
+                        <% } %>
+                        <hr></hr>
+                    </li>
+                    <% }); %>                    
+                </ul>
+            </div>
+            
+        </div>
+
+    
+  	</body>
+</html>

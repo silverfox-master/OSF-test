@@ -1,0 +1,25 @@
+<div>
+    <% if ((num_pages.length>0) && totalItemCount>10){ %>
+    <ul id="paginator">
+        <li>
+            <% if ( currentPage > 0 ) { %>
+                <a href="/shop/<%= breadcrumbs
+                                    .slice(1,breadcrumbs.length-1)
+                                    .join('/') %>/<%= currentPage-1%>">prev-page</a>
+            <% } %>
+        </li> 
+        <% _.each(num_pages, function(page, idx) { %>
+            <li><a href="/shop/<%= breadcrumbs
+                                    .slice(1,breadcrumbs.length-1)
+                                    .join('/') %>/<%= idx+1%>"><%=idx+1%></a></li>
+        <% }); %>
+        <li>
+            <% if ( currentPage < num_pages.length ) { %>
+                <a href="/shop/<%= breadcrumbs
+                                    .slice(1,breadcrumbs.length-1)
+                                    .join('/') %>/<%=(Number(currentPage)+1)%>">next-page</a>
+            <% } %>
+        </li>
+    </ul>
+    <% } %>
+</div>

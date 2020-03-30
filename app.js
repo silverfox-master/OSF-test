@@ -7,7 +7,6 @@ var app     = express();
 
 const MongoClient = require("mongodb").MongoClient;
 const colors = require('colors');
-//const dotenv = require('dotenv');
 
 
 
@@ -25,12 +24,26 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.errorHandler());
 
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    next()
+})
+
 // App routes
 app.get("/"  , routes.index);
+app.get("/search", routes.searchProductByName);
+app.get("/cart", routes.getCart);
+app.post("/cart/add/",routes.addItemToCart);
+app.post("/cart/remove/", routes.removeItemFromCart);
+app.post("/cart/remove/all/:id", routes.removeAllItemsFromCart);
+app.post("/cart/remove/all/", routes.removeAllItemsFromCart);
 app.get("/shop/:level1", routes.collectionsOfProducts);
 app.get("/shop/:level1/:level2", routes.collectionsOfProducts);
 app.get("/shop/:level1/:level2/:level3", routes.listOfProducts);
-app.get("/shop/:level1/:level2/:level3/:prodID", routes.oneProduct);
+app.get("/shop/:level1/:level2/:level3/:pageID", routes.listOfProducts);
+app.get("/shop/:level1/:level2/:level3/:pageID/:prodID", routes.oneProduct);
+app.post("/shop/:level1/:level2/:level3/:pageID/:prodID", routes.oneProduct);
+
 
 
 
@@ -46,6 +59,7 @@ let dbClient;
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client;
+    //req.app.locals.pageSize = 10;
     app.locals.collection = client.db("shop").collection("categories");
     app.locals.products = client.db("shop").collection("products");
     app.listen(app.get("port"), function(){
@@ -53,10 +67,6 @@ mongoClient.connect(function(err, client){
     });
 });
 
-// Run server
-// http.createServer(app).listen(app.get("port"), function() {
-// 	console.log("Express server listening on port " + app.get("port"));
-//});
 
 
 

@@ -1,0 +1,32 @@
+<% let medium_photo_index; %>
+    <% _.each(item.image_groups, function(group,idx) { %>
+        <% if (group.view_type == "small"){ %>
+            <% medium_photo_index = idx %>
+            
+        <% }}) %>
+    %>
+
+<div class="column-container
+            bottom-border
+            small-padded 
+            dev-bordered
+            
+            h100px
+            ">
+    <div class="dev-bordered ">   
+        <img  style="height:100%"
+                            src="/images/<%=item
+                                .image_groups[medium_photo_index]
+                                .images[0]
+                                .link %>" 
+                            alt="<%=item.page_title%>">
+    </div>
+    <div class="description  w100 lr-padded dev-bordered">
+        <p><%-item.short_description%></p>
+        
+    </div>
+    <div class="row-container w10   red dev-bordered">
+        <p>$&nbsp;<%=item.price.toFixed(2)%></p>
+    
+    </div>
+</div>

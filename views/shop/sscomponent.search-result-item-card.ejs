@@ -1,0 +1,47 @@
+<% let medium_photo_index; %>
+    <% _.each(item.image_groups, function(group,idx) { %>
+        <% if (group.view_type == "medium"){ %>
+            <% medium_photo_index = idx %>
+            
+        <% }}) %>
+    %>
+
+
+
+<% 
+    let breadcrumbs = item.primary_category_id.split("-");
+    
+    console.log(breadcrumbs);
+%>
+
+
+<div class="row-container
+            bottom-border
+            small-padded 
+            float-right
+            h10
+            dev-bordered
+            ">
+    <div class="row-cont w15 fit-in">   
+        <img class=" h100" src="/images/<%=item
+            .image_groups[medium_photo_index]
+            .images[0]
+            .link %>" 
+                alt="<%=item.page_title%>">
+    </div>
+    <div class="description  w50 lr-padded">
+        <p><%-item.short_description%></p>
+    </div>
+    <div class="row-container  w35 lr-padded">
+        <p><%=item.price.toFixed(2)%></p>
+        <form method="POST" action="/cart/add/" >
+            <input type="hidden" name="price"  value="<%=item.price%>" >
+            <button type="submit" name="id" value="<%=item.id %>"  class="show-more-btn green centered-b">Add to Cart</button>
+        </form>
+        <!-- <a href="/cart/add/<%=item.id%>" class="show-more-btn green centered-b">Add to Cart</a> -->
+        <a href="/shop/<%=breadcrumbs
+            .slice(0,breadcrumbs.length-1)
+            .join('/')%>/<%=item.primary_category_id%>/0/<%=item.id%>" 
+           class="show-more-btn blue centered-b">More Info</a>
+    </div>
+</div>

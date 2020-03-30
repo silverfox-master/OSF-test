@@ -1,0 +1,51 @@
+<% let medium_photo_index; %>
+    <% _.each(item.image_groups, function(group,idx) { %>
+        <% if (group.view_type == "medium"){ %>
+            <% medium_photo_index = idx %>
+            
+        <% }}) %>
+    %>
+
+<div class="row-container
+            bottom-border
+            small-padded 
+            
+            
+            h200px
+            ">
+    <div class="row-cont w25 fit-in ">   
+        <img  src="/images/<%=item
+                                .image_groups[medium_photo_index]
+                                .images[0]
+                                .link %>" 
+                           alt="<%=item.page_title%>">
+    </div>
+    <div class="description  w65 lr-padded  column-container">
+        <p><%-item.short_description%></p>
+        <div class="row-container    ">
+            <div class="row-container w60  ">
+                <form method="POST" action="/cart/add/" >
+                    <input type="hidden" name="price"  value="<%=item.price.toFixed(2)%>" >
+                    <button type="submit" name="id" value="<%=item.id %>"  class="show-more-btn lightgrey-b centered-b">ADD</button>
+                </form>
+                <div class="row-container  w10  centered-b">
+                    <p ><&nbsp;<%=cart.items[item.id].quantity%>&nbsp;></p>
+                </div>
+                <form method="POST" action="/cart/remove/" >
+                    <input type="hidden" name="price"  value="<%=item.price.toFixed(2)%>" >
+                    <button type="submit" name="id" value="<%=item.id %>"  class="show-more-btn lightgrey-b centered-b">REMOVE</button>
+                </form>
+            </div>
+            <div class="centered-b">
+                <form method="POST" action="/cart/remove/all/" >
+                    <input type="hidden" name="price"  value="<%=item.price.toFixed(2)%>" >
+                    <button type="submit" name="id" value="<%=item.id %>"  class="show-more-btn lightgrey-b centered-b">CLEAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row-container w10   red">
+        <p>$&nbsp;<%=item.price.toFixed(2)%></p>
+    
+    </div>
+</div>

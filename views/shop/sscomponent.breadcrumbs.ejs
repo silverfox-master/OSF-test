@@ -1,0 +1,23 @@
+<div>
+    
+    <ul id="breadcrumb">
+        
+        <% _.each(breadcrumbs, function(unit, idx) { %>
+            <% const addr = breadcrumbs.slice(1,idx+1).join('/')%>
+            
+            <li><a
+                    <% if (unit == "home") { %>
+                        href="/" 
+                    <% } else { %>
+                        href="/shop/<%=addr%>"
+                    <% } %>
+                >
+                    <% if ((idx === breadcrumbs.length-1) && item) { %>
+                        <%=item.name%>
+                    <% } else if (!((idx === breadcrumbs.length-1) && (breadcrumbs[breadcrumbs.length-1]=="0"))){ %>
+                        <%=unit%>
+                    <% } %>
+                </a></li>
+        <% }); %>
+    </ul>
+</div>

@@ -1,0 +1,43 @@
+<% let medium_photo_index %>
+    <% _.each(item.image_groups, function(group,idx) { %>
+        <% if (group.view_type == "small"){ %>
+            <% medium_photo_index = idx %>
+            
+        <% }}) %>
+    %>
+
+<% breadcrumbs.push(item.id) %>
+
+    <% if(!no_price) { %>
+        <a href="/shop/<%=breadcrumbs.slice(1,breadcrumbs.length).join('/')%>">
+            <div class="column-container small-padded h50 ">
+                <div class="row-cont w100 fit-in"> 
+                    <img src="/images/<%=item
+                                    .image_groups[medium_photo_index]
+                                    .images[0]
+                                    .link %>" 
+                                        alt="<%=item.page_title%>">
+                </div>
+                <p>$<%=item.price.toFixed(2)%></p>
+            </div>
+        </a>
+    <% } else { %>
+        <form class="form-inline-float " method="POST" action="/shop/<%=breadcrumbs
+                                                        .slice(1,breadcrumbs.length)
+                                                        .join('/')%>">
+            <input type="hidden" name="link"  value="<%=img%>" >
+            <button type="submit" name="id" value="<%=img%>"  class="no-button">
+                            <div class="column-container small-padded h50 ">
+                                <div class="row-cont w100 fit-in">
+                                    <% console.log("img:",img)%>
+                                    <% if (img) { %>
+                                        <img src="/images/<%=img%>" 
+                                            alt="image">  
+                                    <% }%>    
+                                </div>
+                            </div>
+            </button>
+        </form>
+            
+    <% } %>
+

@@ -1,0 +1,25 @@
+<div class="centered">
+    <div class="column-container
+                big-padded
+                big-margined
+                styled
+                ">
+
+        <h2 class="small-padded"><%= category.name %></h2>
+                            
+        <% if (category.image) { %>
+            <div>
+                <img src="/images/<%= category.image %>">
+            </div>
+        <% } %>
+            <p class="small-padded"><%= category.page_description %></p>
+            <!-- <div class="row-container"> -->
+                <% if (category.categories) { %>
+                    <a class="show-cat-btn marginal centered-b" href="/shop/<%= items.id%>/<%= category.id %>">View More</a>
+                <% } else { %>
+                    <a class="show-cat-btn marginal centered-b" href="/shop/<%= items.parent_category_id%>/<%= items.id%>/<%= category.id %>/0">View More</a>
+                <% } %>
+            <!-- </div> -->
+        </hr>
+    </div>
+</div>

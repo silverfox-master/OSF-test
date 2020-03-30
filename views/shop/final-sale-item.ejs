@@ -3,26 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/styles2.css" />
-    <title><%=item.page_title%></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <!-- <link rel="stylesheet" href="/stylesheets/product-detail.style.css" /> -->
+    
+    <link rel="stylesheet" href="/stylesheets/product-list.style.css" />
+    <link rel="stylesheet" href="/stylesheets/containers.css" />
+    <link rel="stylesheet" href="/stylesheets/currency-picker.style.css" />
+    <link rel="stylesheet" href="/stylesheets/breadcrumbs.style.css" />
+    <link rel="stylesheet" href="/stylesheets/navbar.style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet"> 
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <title><%=item.name%></title>
 </head>
 <body>
-    <div class="topnav">
-        <a class="inactive"> OSF Shop </a>
-        <div class="menu" >
-            <a href="/shop/mens">Mens</a>
-            <a href="/shop/womens">Womens</a>
+<%
+    const get_color_value = (color) =>{
+        return item.variation_attributes[0]
+                .values
+                .filter(ent =>{
+                    <!-- console.log(ent); -->
+                    return ent.name == color
+                })[0].value
+    }
+%>
+<% const images = item.image_groups
+    .filter(ent => ( ent.view_type=="large" && ent.variation_value == get_color_value(color)))%>
+  
+    <%- include('sscomponent.navbar.ejs') %>
+    <%- include('sscomponent.breadcrumbs.ejs') %>
+    
+<div class="row-container ">
+    <!-- <div class="card-preview-big "> -->
+        <div class="mix-container ">
+            <div class=" w50 column-container">
+                <% console.log("EJS - line 39 - link is", link) %>
+                <% if(link){ %>
+                    <img src="/images/<%=link%>" alt="<%=item.page_title%>">
+                <% } else {%> 
+                    <% if (images.length > 0) {%>
+                        <img src="/images/<%=images[0].images[0].link%>" alt="<%=item.page_title%>">
+                    <% } else {%>
+                        <img src="/images/<%=item.image_groups[0].images[0].link%>" alt="<%=item.page_title%>">
+                    <%}%>
+                <%} %>
+                <div >
+                    <ul class="small-padded row-container size-chart no-list">
+                        
+                        <% if (images.length > 0 && images[0].images.length>1) {%>
+                            <% _.each(images[0].images, function(img) { %>
+                                <li>
+                                    <%-include('components/recomendation-preview.ejs',{item:item, breadcrumbs:breadcrumbs.slice(0,breadcrumbs.length-1),no_price:true, img: img.link}) %>
+                                </li>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-text-container ">
+                <p class="header "><%= item.name%></p>
+                <p>Price: $&nbsp;<%=item.price.toFixed(2)%></p>
+                <p class="small-padded "><%- item.long_description %></p>
+                <div class="">
+                    <% if (item.variation_attributes) { %>
+                        <div class="column-container ">
+                            <div class=" lightgrey orange small-margined 
+                                        small-padded styled-text "
+                                            >
+                                <% if(size) { %>
+                                    <p >your size ( <%=size%> )</p>
+                                <% } else {%>
+                                    <p >your size ( &nbsp; )</p>
+                                <% } %>
+
+                            </div>
+                            <ul class="small-padded size-chart no-list ">
+                                <% console.log("variations[color] :",variations[color])%>
+                                <% _.each(variations[color], function(value) { %>
+                                    <li >
+                                        <form class="form-inline-float " method="POST" action="/shop/<%=breadcrumbs
+                                                        .slice(1,breadcrumbs.length)
+                                                        .join('/')%>">
+                                            <input type="hidden" name="size"  value="<%=value%>" >
+                                            <button type="submit" name="id" value="<%=value%>"  class="show-more-btn lightgrey-b centered-b"><%=value%></button>
+                                        </form>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <div class="column-container ">
+                            <div class=" lightgrey orange small-margined 
+                                        small-padded styled-text "
+                                            >
+                                <% if(color) { %>
+                                    <p >your color ( <%=color%> )</p>
+                                <% } else {%>
+                                    <p >your color ( &nbsp; )</p>
+                                <% } %>
+                            </div>
+                            <!-- <% console.log("variations in EJS :",variations)%> -->
+                            <ul class="small-padded size-chart no-list ">
+                                <% _.each(variations, function(value,name) { %>
+                                        <% if(value.length > 0 ) { %>
+                                            <li >
+                                                <form class="form-inline-float " method="POST" action="/shop/<%=breadcrumbs
+                                                                .slice(1,breadcrumbs.length)
+                                                                .join('/')%>">
+                                                    <input type="hidden" name="color"  value="<%=name%>" >
+                                                    <button type="submit" name="id" value="<%=name%>"  class="show-more-btn lightgrey-b centered-b"><%=name%></button>
+                                                </form>
+                                            </li>
+                                        <% } %>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <p>No size and color variations</p>
+                    <% } %>
+                </div>
+                <form method="POST" action="/cart/add/" >
+                    <input type="hidden" name="price"  value="<%=item.price%>" >
+                    <button type="submit" name="id" value="<%=item.id %>"  class="show-more-btn green centered-b">Add to Cart</button>
+                </form>    
+                
+            </div>
+            
+        </div>
+    <!-- </div> -->
+    <div class="pdp-recomendations-container">
+        <div class="h50px 
+                         
+                        lightgrey
+                        small-padded
+                        orange
+                        small-margined
+                        styled-text
+                        column-container
+                        "
+                         >
+            <p >RECOMENDATIONS</p>
+        </div>
+        <div >
+            <ul class="row-container wraped no-list">
+                <% _.each(recomendations, function(item) { %>
+                    <li>
+                        
+                            <%-include('components/recomendation-preview.ejs',{item:item, breadcrumbs:breadcrumbs.slice(0,breadcrumbs.length-1),no_price:false}) %>  
+                                       
+                    </li>
+                <% }) %>
+            </ul>
         </div>
     </div>
-    <div>
-        <ul class="breadcrumb">
-            <% _.each(breadcrumbs, function(item, idx) { %>
-                <% const addr = breadcrumbs.slice(0,idx+1).join('/')%>
-                <li><a href="/shop/<%=addr%>"><%=item%></a></li>
-            <% }); %>
-        </ul>
-    </div>
-
-    <p>Yes - finaly - trading item! with the name of <%=item.name%></p>
+</div>    
 </body>
 </html>

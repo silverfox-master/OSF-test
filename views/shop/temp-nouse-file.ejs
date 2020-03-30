@@ -1,0 +1,72 @@
+<div>
+    <ul id="breadcrumb">
+        <% _.each(breadcrumbs, function(unit, idx) { %>
+            <% const addr = breadcrumbs.slice(0,idx+1).join('/')%>
+            
+            <li><a href="/shop/<%=addr%>">
+            <% if ((idx === breadcrumbs.length-1) && item) { %>
+                    <%=item.name%>
+                <% } else { %>
+                    <%=unit%>
+                <% } %>
+                </a></li>
+        <% }); %>
+    </ul>
+</div>
+
+<input type="sumbit" class="no-button icon"><i href="#" class="fa fa-search"></i></input>
+                    <input type="text" id="search" placeholder="Search..." />
+                
+
+
+/images/<%=item
+                    .image_groups[0]
+                    .images[0]
+                    .link %>
+
+<!-- console.log("item.variation_attributes :", item.variation_attributes)
+                        <% _.each(item.variation_attributes[1].values, function(value, idx) { %>
+                            <li>
+                                <p><%= value.name%></p>                   
+                            </li> -->
+                        <!-- <% }); %> -->
+
+
+
+<% if (images.length > 0) {%>
+    <img src="/images/<%=images[0].images[0].link%>" alt="<%=item.page_title%>">
+<% } else {%>
+    <img src="/images/<%=item.image_groups[0].images[0].link%>" alt="<%=item.page_title%>">
+<%}%>
+
+
+<!-- return item.variation_attributes[0].values.filter(ent =>(ent.name == color))[0].value -->
+
+let colorName = target.variation_attributes[0]
+						.values
+						.filter(ent2 =>{
+							console.log(ent2);
+							return ent2.value == target.variation_value
+						}).name
+		variations = target.image_groups
+			.filter(ent => ( ent.view_type=="large" && ent.variation_value !== undefined))
+		.map( item => {
+			variations[colorName] = ["ALL SIZE"]
+			if(!req.session.cache.color) {
+				req.session.cache.color = colorName
+			}
+        })
+        
+// from seach func
+        function(err, items) {
+            if(!items){
+                const alertMessage = `Sorry, no match found for ${req.query.search}`
+                return res.render('shop/search',{
+                    msg: alertMessage,
+                    items: []
+                }
+
+
+                /shop/<%=breadcrumbs
+                .slice(1,breadcrumbs.length-1)
+                .join('/')%>/<%=currentPage%>/<%=item.id%>

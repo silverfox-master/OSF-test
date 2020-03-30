@@ -1,0 +1,38 @@
+
+    <% let medium_photo_index; %>
+    <% _.each(item.image_groups, function(group,idx) { %>
+        <% if (group.view_type == "medium"){ %>
+            <% medium_photo_index = idx %>
+            
+        <% }}) %>
+    %>
+
+
+    
+    <h2 ><%= item.name %></h2>
+    <div class="mix-container">
+        <!-- <% console.log("medium_photo_index", medium_photo_index)%> -->
+        <img src="/images/<%=item
+                .image_groups[medium_photo_index]
+                .images[0]
+                .link %>" 
+             alt="<%=item.page_title%>" >
+        <div class="card-text-container">
+            <% let temp = item.short_description.split(" "); %>
+            <% temp = temp.slice(0,22); %>        
+            <% temp.push("..."); %>        
+            <% temp = temp.join(" "); %>
+            
+            <p ><%= temp %></p>
+            
+            <div class="footer">
+                <p>Price: $&nbsp;<%=item.price.toFixed(2)%></p>
+                <a href="/shop/<%=breadcrumbs
+                        .slice(1,breadcrumbs.length-1)
+                        .join('/')%>/<%=currentPage%>/<%=item.id%>"
+                    class="show-cat-btn lightgrey-b centered-b">&nbsp;&nbsp;More&nbsp;&nbsp;</a>
+            </div>
+            
+        </div>
+    </div>
+

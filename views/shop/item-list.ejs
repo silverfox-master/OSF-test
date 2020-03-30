@@ -3,44 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/styles2.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/containers.css" />
+
+    <!-- <link rel="stylesheet" href="/stylesheets/product-detail.style.css" /> -->
+    <link rel="stylesheet" href="/stylesheets/preview-card.style.css" />
+    <link rel="stylesheet" href="/stylesheets/breadcrumbs.style.css" />
+    <link rel="stylesheet" href="/stylesheets/navbar.style.css" />
+    <link rel="stylesheet" href="/stylesheets/paginator.style.css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <title><%= breadcrumbs[breadcrumbs.length-1]%></title>
 </head>
 <body>
-    <div class="topnav">
-        <a class="inactive"> OSF Shop </a>
-        <div class="menu" >
-            <a href="/shop/mens">Mens</a>
-            <a href="/shop/womens">Womens</a>
-        </div>
-    </div>
+    <!-- Small helper -->
+    <% const num_pages = new Array(Math.floor(totalItemCount / pageSize));%>
+    
+    <%- include('sscomponent.navbar.ejs'); %>
+    <%- include('sscomponent.breadcrumbs.ejs',{item:0}); %>
+
     <div>
-        <ul class="breadcrumb">
-            <% _.each(breadcrumbs, function(item, idx) { %>
-                <% const temp = breadcrumbs.slice(0,idx+1).join('/')%>
-                <li><a href="/shop/<%=temp%>"><%=item%></a></li>
-            <% }); %>
-        </ul>
+        <h3>Total count of items in category : <%= totalItemCount%></h3>
     </div>
-    <div>
-        <h3>Total count of items in category : <%= items.length%></h3>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum similique nam autem fuga, exercitationem explicabo accusamus maxime inventore aliquam magni!</p>
-    </div>
-    <div>
-        <ul>
+    <div >
+        <ul class="card-container">
             <% _.each(items, function(item) { %>
-            <li >
-                <a 
-                href="/shop/<%=breadcrumbs.join('/')%>/<%=item.id%>"
-                ><%= item.name %></a>
-                                
-                <p><%= item.short_description %></p>
-                <h3><%=item.price%></h3>
-                <hr></hr>
-            </li>
+                <li class="card-preview" >
+                    <%- include('sscomponent.preview-card.ejs',{item:item}); %>                   
+                </li>
             <% }); %>                    
         </ul>
     </div>
-    
+    <%- include('sscomponent.paginator.ejs', {num_pages:num_pages}); -%>
+     
 </body>
 </html>

@@ -1,0 +1,19 @@
+<div class="centered">
+    <div class="column-container big-padded big-margined styled">
+        <h2 class="small-padded"><%= context.category.name %></h2>
+        <% if (context.category.image) { %>
+            <div>
+                <img src="/images/<%= context.category.image %>">
+            </div>
+        <% } %>
+            <p class="small-padded"><%= context.category.page_description %></p>
+            <!-- <div class="row-container"> -->
+                <% if (context.category.categories) { %>
+                    <a class="show-cat-btn marginal centered-b" href="/category/<%= context.category.id %>">View More</a>
+                <% } else { %>
+                    <a class="show-cat-btn marginal centered-b" href="/products/category/<%= context.category.id %>">View More</a>
+                <% } %>
+            <!-- </div> -->
+        </hr>
+    </div>
+</div>

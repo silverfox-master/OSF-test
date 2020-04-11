@@ -1,0 +1,16 @@
+<% layout('../../layout') -%>
+
+<div class="styled">
+    <h1 class="small-padded"><%= items.name %></h1>
+    <p class="small-padded"><%= items.page_description %></p>
+    <div class="big-margined ">
+        <ul class="no-list">
+            <% _.each(items.categories, function(subC) { %>
+                <li>
+                    <% var context =  {category: subC} ;%>
+                    <%-include components/category-partial%>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</div>

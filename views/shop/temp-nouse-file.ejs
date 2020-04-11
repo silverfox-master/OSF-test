@@ -70,3 +70,25 @@ let colorName = target.variation_attributes[0]
                 /shop/<%=breadcrumbs
                 .slice(1,breadcrumbs.length-1)
                 .join('/')%>/<%=currentPage%>/<%=item.id%>
+<!-- <% const num_pages = new Array(Math.floor(totalItemCount / pageSize));%> -->
+                <!-- <%- include('sscomponent.paginator.ejs', {num_pages:num_pages}); -%> -->
+
+                href="/shop/<%=breadcrumbs
+                .slice(1,breadcrumbs.length-1)
+                .join('/')%>/<%=currentPage%>/<%=context.item.id%>"
+
+
+                // if (page){
+                    // 	arraySliceBegin = page * pageSize;
+                    // 	arraySliceEnd = ( Number(page) + 1 ) * pageSize;
+                    // }
+
+
+                    // const breadcrumbs = ["home", ...Object.values(req.params)]
+	
+                    // if(req.params.level3 && page==undefined){
+                    // 	page = 0;
+                    // 	breadcrumbs.push(0);
+                    // }
+
+                    // const pageSize = req.app.locals.pageSize || 10;

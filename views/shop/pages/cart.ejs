@@ -1,0 +1,85 @@
+<% layout('/views/layout') -%>
+
+<div class="row-container  w80 centered">
+    <div class="column-container w70">
+        <div class="h100px 
+                    lightgrey
+                    small-padded
+                    orange
+                    small-margined
+                    styled-text
+                    column-container
+                    ">
+            <p >SOME PROMO SHORT ADD - Lorem ipsum dolor sit.</p>
+        </div>
+        <div class="h70px
+                    lightgrey 
+                    small-margined 
+                    small-padded
+                    column-container 
+                    styled-text">
+            <% if (list.length > 0) { %>
+                <p class="styled-text"> YOUR CART (<%= (cart.total_item_count || 0) %>)</p>    
+            <% } else { %>
+                <p class="styled-text"> NO ITEMS IN YOUR CART YET</p> 
+            <% }%>
+        </div>
+        <div >
+            <ul class="column-container no-list ">
+                <% if (list.length > 0) { %>
+                    <% _.each(list, function(item) { %>
+                        <li class="search-preview " >
+                        
+                            <%-include('sscomponent.cart.ejs',{item:item}); %>                   
+                        </li>
+                    <% }); %> 
+                <% } %>                   
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="column-container
+                 small-margined
+                 small-padded 
+                 dark-schema
+                 w30
+                 sticky
+                 " style="max-height: 400px">
+        <p style="font-size: 1.5rem">SUMMARY</p>
+        <hr/>
+        <div class="row-container">
+            <p style="font-size: 1.0rem">SUBTOTAL</p>
+            <% if (list.length > 0) { %>
+                <p style="font-size: 1.0rem">$&nbsp;<%=cart.total_price.toFixed(2)%></p>
+            <% } else {%>
+                <p style="font-size: 1.0rem">$&nbsp;0.00</p>
+            <% } %>
+        </div>
+        <hr/>
+        <div class="row-container">
+            <p style="font-size: 1.0rem">ESTIMATED SHIPPING AND HANDLING</p>
+            <p style="font-size: 1.0rem">$&nbsp;0.00</p>
+        </div>
+        <hr/>
+        <div class="row-container">
+            <p style="font-size: 0.8rem">TAX</p>
+            <p style="font-size: 0.8rem">$&nbsp;0.00</p>
+        </div>
+        <hr/>
+        <div class="row-container">
+            <p style="font-size: 1.5rem">TOTAL</p>
+            <% if (list.length > 0) { %>
+                <p style="font-size: 1.5rem">$&nbsp;<%=cart.total_price.toFixed(2)%></p>
+            <% } else {%>
+                <p style="font-size: 1.5rem">$&nbsp;0.00</p>
+            <% } %>
+            
+        </div>
+        <hr/>
+        <div class="row-container ">
+            <a href="/checkout" class="orange-button dev-bordered">CHECKOUT</a>
+        </div>
+    </div>
+
+</div>

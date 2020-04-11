@@ -1,0 +1,41 @@
+<% let medium_photo_index
+   _.each(item.image_groups, function(group,idx) { 
+        if (group.view_type == "small"){ 
+            medium_photo_index = idx
+        }
+    })
+%>
+   
+
+
+
+    <% if(!context.no_price) { %>
+        <a href="/products/<%=context.item.id%>">
+            <div class="column-container small-padded h50 ">
+                <div class="row-cont w100 fit-in"> 
+                    <img src="/images/<%=context.item
+                                    .image_groups[medium_photo_index]
+                                    .images[0]
+                                    .link %>" 
+                                        alt="<%=item.page_title%>">
+                </div>
+                <p>$<%=context.item.price.toFixed(2)%></p>
+            </div>
+        </a>
+    <% } else { %>
+        <form class="form-inline-float " method="POST" action="/products/<%=context.item.id%>">
+            <input type="hidden" name="link"  value="<%=img%>" >
+            <button type="submit" name="id" value="<%=img%>"  class="no-button">
+                            <div class="column-container small-padded h50 ">
+                                <div class="row-cont w100 fit-in">
+                                    <% if (context.img) { %>
+                                        <img src="/images/<%=context.img%>" 
+                                            alt="image">  
+                                    <% }%>    
+                                </div>
+                            </div>
+            </button>
+        </form>
+            
+    <% } %>
+

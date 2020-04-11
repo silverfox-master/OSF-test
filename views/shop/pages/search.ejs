@@ -1,0 +1,18 @@
+<% layout('/views/layout') -%>
+
+<h1><%=msg %></h1>
+        <% if(items.length!==0) { %>
+            <div >
+                <ul class="column-container
+                            big-padded
+                            big-margined
+                            no-list
+                        ">
+                    <% _.each(items, function(item) { %>
+                        <li class="search-preview" >
+                            <%- include('sscomponent.search-result-item-card.ejs',{item:item}); %>                   
+                        </li>
+                    <% }); %>                    
+                </ul>
+            </div>
+        <% } %>

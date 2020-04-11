@@ -1,60 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-    <!-- <link rel="stylesheet" href="/stylesheets/product-detail.style.css" /> -->
-    
-    <link rel="stylesheet" href="/stylesheets/product-list.style.css" />
-    <link rel="stylesheet" href="/stylesheets/containers.css" />
-    <link rel="stylesheet" href="/stylesheets/currency-picker.style.css" />
-    <link rel="stylesheet" href="/stylesheets/breadcrumbs.style.css" />
-    <link rel="stylesheet" href="/stylesheets/navbar.style.css" />
-    <link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet"> 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <title><%=item.name%></title>
-</head>
-<body>
-<%
+<% layout('../../layout') -%>
+
+
+<%  
     const get_color_value = (color) =>{
         return item.variation_attributes[0]
                 .values
                 .filter(ent =>{
-                    <!-- console.log(ent); -->
                     return ent.name == color
                 })[0].value
+}
+    if(item.variation_attributes) {
+        
+        const images = item.image_groups
+                .filter(ent => ( ent.view_type=="large" && ent.variation_value == get_color_value(color)))
     }
 %>
-<% const images = item.image_groups
-    .filter(ent => ( ent.view_type=="large" && ent.variation_value == get_color_value(color)))%>
   
-    <%- include('sscomponent.navbar.ejs') %>
-    <%- include('sscomponent.breadcrumbs.ejs') %>
     
 <div class="row-container ">
     <!-- <div class="card-preview-big "> -->
         <div class="mix-container ">
             <div class=" w50 column-container">
-                <% console.log("EJS - line 39 - link is", link) %>
-                <% if(link){ %>
-                    <img src="/images/<%=link%>" alt="<%=item.page_title%>">
-                <% } else {%> 
-                    <% if (images.length > 0) {%>
-                        <img src="/images/<%=images[0].images[0].link%>" alt="<%=item.page_title%>">
-                    <% } else {%>
-                        <img src="/images/<%=item.image_groups[0].images[0].link%>" alt="<%=item.page_title%>">
-                    <%}%>
-                <%} %>
+                <% if(item.variation_attributes) { %>   
+                    <% if(link){ %>
+                        <img src="/images/<%=link%>" alt="<%=item.page_title%>">
+                    <% } else {%> 
+                        <% if (images.length > 0) {%>
+                            <img src="/images/<%=images[0].images[0].link%>" alt="<%=item.page_title%>">
+                        <% } else {%>
+                            <img src="/images/<%=item.image_groups[0].images[0].link%>" alt="<%=item.page_title%>">
+                        <%}%>
+                    <%} %>
+                <% } else { %>
+                    <img src="/images/<%=item.image_groups[0].images[0].link%>" alt="<%=item.page_title%>">
+                <% } %>
                 <div >
                     <ul class="small-padded row-container size-chart no-list">
-                        
-                        <% if (images.length > 0 && images[0].images.length>1) {%>
-                            <% _.each(images[0].images, function(img) { %>
-                                <li>
-                                    <%-include('components/recomendation-preview.ejs',{item:item, breadcrumbs:breadcrumbs.slice(0,breadcrumbs.length-1),no_price:true, img: img.link}) %>
-                                </li>
-                            <% }) %>
+                        <% if(item.variation_attributes) { %>
+                            <% if (images.length > 0 && images[0].images.length>1) {%>
+                                <% _.each(images[0].images, function(img) { %>
+                                    <li>
+                                        <% var context =  {item: item, no_price:false, no_price:true, img: img.link} ;%>
+                                        <%- include components/recomendations-partial %>
+                                    </li>
+                                <% }) %>
+                            <% } %>
                         <% } %>
                     </ul>
                 </div>
@@ -146,14 +136,11 @@
             <ul class="row-container wraped no-list">
                 <% _.each(recomendations, function(item) { %>
                     <li>
-                        
-                            <%-include('components/recomendation-preview.ejs',{item:item, breadcrumbs:breadcrumbs.slice(0,breadcrumbs.length-1),no_price:false}) %>  
-                                       
+                        <% var context =  {item: item, no_price:false} ;%>
+                        <%- include components/recomendations-partial %>           
                     </li>
                 <% }) %>
             </ul>
         </div>
     </div>
-</div>    
-</body>
-</html>
+</div> 

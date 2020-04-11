@@ -1,0 +1,20 @@
+<% layout('../../layout') -%>
+
+
+
+    
+
+<div>
+    <h3>Total count of items in category : <%= totalItemCount%></h3>
+</div>
+<div >
+    <ul class="card-container">
+        <% _.each(items, function(item) { %>
+            <li class="card-preview" >
+                <% var context =  {item: item} ;%>
+                <%- include components/products-partial %> 
+                                 
+            </li>
+        <% }); %>                    
+    </ul>
+</div>

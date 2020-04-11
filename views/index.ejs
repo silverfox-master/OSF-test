@@ -1,70 +1,57 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title><%= title %></title>
-		<link rel="stylesheet" href="/stylesheets/breadcrumbs.style.css" />
-		<link rel="stylesheet" href="/stylesheets/product-list.style.css" />
-    
-    	<link rel="stylesheet" href="/stylesheets/navbar.style.css" />
-		<link rel="stylesheet" href="/stylesheets/containers.css" />
-    	<link rel="stylesheet" href="/stylesheets/style.css" />
-  	</head>
-  	
-  	<body>
-		<%
-			const mensImageUrl = "https://i.insider.com/5c9920e4ffcb27528b2595f2?width=700&format=jpeg&auto=webp"
-			const womensImageUrl = "https://asda.scene7.com/is/image/Asda/LS_pretty-western_01_110320?wid=738&qlt=85"
-		%>
-    	<div class="column-container w80  centered">
-			<div class="column-container">
-				<div class="h100px 
-						
-                        lightgrey
-                        small-padded
-                        orange
-                        small-margined
-                        styled-text
-                        column-container
-                        ">
-                	<p >SOME PROMO SHORT ADD - Lorem ipsum dolor sit.</p>
-            	</div>
-				<div class="h400px 
-				lightgrey
-                        small-padded
-                        orange
-                        small-margined
-                        styled-text
-						column-container
-						
-						">
-					<div class="row-container h75 ">
-						<div class="w50 col-container small-padded" style="position:relative">
-							<div class=" image" style='background-image: url(<%=mensImageUrl%>)'></div>
-							<div class="custom-button2">
-								<a class="no-text-decor" href="/shop/mens">Shop Now</a>
-							</div>
-						</div>
-						<div class="w50 col-container small-padded" style="position:relative">
-							<div class=" image" style='background-image: url(<%=womensImageUrl%>)'></div>
-							<div class="custom-button2">
-								<a class="no-text-decor" href="/shop/womens">Shop Now</a>
-							</div>
-						</div>
-					</div>
-					
-					
-					<form action="/search" method="GET">
-						<div class="box small-margined">
-							<div class="container-1 in-row ">
-								<button type="submit" value="Search" class="no-button icon"><i href="#" class="fa fa-search"></i></button>
-								<input type="search" id="search" placeholder="Search..." name="search" />
-							</div>
-						</div>
-					</form>
-				</div>
-				
-			</div>
+<%- layout('./layout') -%>
 
+<%
+	const mensImageUrl = "https://i.insider.com/5c9920e4ffcb27528b2595f2?width=700&format=jpeg&auto=webp"
+	const womensImageUrl = "https://asda.scene7.com/is/image/Asda/LS_pretty-western_01_110320?wid=738&qlt=85"
+%>
+<div class="column-container w80  centered">
+	<div class="column-container">
+		<div class="h100px 
+				
+				lightgrey
+				small-padded
+				orange
+				small-margined
+				styled-text
+				column-container
+				">
+			<p >SOME PROMO SHORT ADD - Lorem ipsum dolor sit.</p>
 		</div>
-  	</body>
-</html>
+		<div class="h400px 
+		lightgrey
+				small-padded
+				orange
+				small-margined
+				styled-text
+				column-container
+				
+				">
+			<div class="row-container h75 ">
+				<div class="w50 col-container small-padded" style="position:relative">
+					<div class=" image" style='background-image: url(<%=mensImageUrl%>)'></div>
+					<div class="custom-button2">
+						<a class="no-text-decor" href="/category/mens">Shop Now</a>
+					</div>
+				</div>
+				<div class="w50 col-container small-padded" style="position:relative">
+					<div class=" image" style='background-image: url(<%=womensImageUrl%>)'></div>
+					<div class="custom-button2">
+						<a class="no-text-decor" href="/category/womens">Shop Now</a>
+					</div>
+				</div>
+			</div>
+			
+			
+			<form action="/search" method="GET">
+				<div class="box small-margined">
+					<div class="container-1 in-row ">
+						<button type="submit" value="Search" class="no-button icon"><i href="#" class="fa fa-search"></i></button>
+						<input type="search" id="search" placeholder="Search..." name="search" />
+					</div>
+				</div>
+			</form>
+		</div>
+		
+	</div>
+
+</div>

@@ -1,14 +1,17 @@
 const { renderTemplate , isInArray } = require("../helpers/render-helpers");
+const Categories = require("../models/categories")
 
 exports.getCategory = async function(req, res) {
     var _ = require("underscore");
-	const collection = req.app.locals.collection;
+	// const collection = req.app.locals.collection;
+	// let temp_category_for_mongoose_query;
 
 	//TODO -- refactor breadcrumbs regarding new query architecture
 	//const breadcrumbs = ["home", ...Object.values(req.params)]
 	
 	let queryCategories = req.params.id.split("-");
-	let targetCategory = await collection.findOne({id: queryCategories[0]});
+	let targetCategory = await Categories.findOne({id: queryCategories[0]})
+	
 
 	// console.log("queryCategories are : ",queryCategories)
 	

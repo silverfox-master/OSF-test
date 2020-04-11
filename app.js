@@ -1,14 +1,23 @@
 // Module dependencies.
-var express = require("express")
-  , path    = require("path")
-  , cart  = require("./routes/cart")
+var express   = require("express")
+  , path      = require("path")
+  , cart      = require("./routes/cart")
   , category  = require("./routes/category")
-  // , pdp  = require("./routes/pdp")
   , products  = require("./routes/products")
-  , search  = require("./routes/search")
-  , index   = require("./routes/index")
+  , search    = require("./routes/search")
+  , index     = require("./routes/index");
+const morgan = require('morgan');
+const colors = require('colors');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+var session   = require('express-session')
+const { connectDB } = require('./config/db');
+
 var app     = express();
-var session = require('express-session')
+dotenv.config({ path:'./config/config.env' })
+
+//Connect to mongoose
+connectDB();
 
 //session middleware
 app.set('trust proxy', 1) // trust first proxy
@@ -19,10 +28,8 @@ app.use(session({
   cookie: { secure: true }
 }));
 
-const MongoClient = require("mongodb").MongoClient;
-const morgan = require('morgan');
-const colors = require('colors');
-const cookieParser = require('cookie-parser');
+
+
 
 // All environments
 app.use(express.json());
@@ -38,10 +45,6 @@ app.engine('ejs', require('ejs-locals'));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(function (req, res, next) {
-    res.locals.session = req.session;
-    next()
-})
 
 // Mount App routes
 app.use("/"  , index);            // DONE
@@ -51,24 +54,9 @@ app.use("/cart", cart);
 app.use("/products", products);
 
 
-// Connect to mongoDB, open connection and keep it while server running
-const mongoClient = new MongoClient("mongodb+srv://user:pass@osf-kzbfh.mongodb.net/shop?retryWrites=true&w=majority", {
-   useNewUrlParser: true,
-   useUnifiedTopology: true
-  });
- 
-let dbClient;
- 
-mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
-    dbClient = client;
-    app.locals.collection = client.db("shop").collection("categories");
-    app.locals.products = client.db("shop").collection("products");
-    app.listen(app.get("port"), function(){
-        console.log("Express server listening on port ",app.get("port") );
-    });
+app.listen(app.get("port"), () => {
+       console.log(`App listening in DEV mode on port ${app.get("port")}!`.yellow.inverse);
 });
-
 
 
 
@@ -76,3 +64,12 @@ process.on("SIGINT", () => {
   dbClient.close();
   process.exit();
 });
+
+
+
+
+
+
+
+
+

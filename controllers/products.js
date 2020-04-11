@@ -1,29 +1,28 @@
 var _ = require("underscore");
+const Products = require("../models/products");
 
-exports.listOfProducts = function(req, res) {
-	console.log( "req.params: ", req.params)
-	let category = req.params.id;
-	const prods = req.app.locals.products;
-	
-	prods
-		.find({primary_category_id: category})
-		.toArray(function(err, items) {
-			let arraySliceBegin = 0;
-			let arraySliceEnd = 10 ;
+exports.listOfProducts = async function(req, res) {
+	//get all products of given category	
+	const items = await Products.find({primary_category_id: req.params.id});
+	let arraySliceBegin = 0;
+	let arraySliceEnd = 10 ;
 						
-			res.render(`shop/pages/products`, { 
-				_ : _ ,
-				totalItemCount: items.length,
-				items : items.slice(arraySliceBegin,arraySliceEnd)
-			});
-		});
+	res.render(`shop/pages/products`, { 
+		_ : _ ,
+		totalItemCount: items.length,
+		items : items.slice(arraySliceBegin,arraySliceEnd)
+	});
+		
 	
 }
 
 //@desc : CACHED MongoDB query PDP
 exports.oneProductVariations = async function(req, res) {
-	let breadcrumbs = ["home", ...Object.values(req.params)]
-	console.log("breadcrumbs are:", breadcrumbs)
+	// let breadcrumbs = ["home", ...Object.values(req.params)]
+	console.log("params are:", req.params)
+	console.log("req.session:", req.session)
+	console.log("req.session.cache is:", req.session.cache)
+
 	if ( req.body.color || req.body.size || req.body.link ) {
 		if(req.body.color){
 			req.session.cache.color = req.body.color;
@@ -48,17 +47,7 @@ exports.oneProductVariations = async function(req, res) {
 		});
 	};
 
-	const prods = req.app.locals.products;
 	
-	//check if cache exists - if not create a new one.
-	if (!req.session.cache){
-		let cache = {
-			id: null, 
-			target: null,
-			recomendations: null
-		}
-		req.session.cache = cache;
-	};
 	// simple redirect back in case of page reload
 	if (req.session.cache.id == req.params.prodID){
 		return res.render(`shop/pages/pdp`, {
@@ -83,17 +72,16 @@ exports.oneProduct = async function(req, res) {
 		recomendations: null
 	}
 	req.session.cache = cache;
-	const prods = req.app.locals.products;
-	let target = await prods.findOne({id: req.params.id});
-	// console.log("target is: ",target);
+	console.log("req.session.cache:",req.session.cache)
+	
+	let target = await Products.findOne({id: req.params.id});
 	
 	//create a regular expration for recomendations query
 	var re = new RegExp(`\\b${target.primary_category_id}\\b`, "gi");
 	
 	//save recomendations in cache
-	req.session.cache.recomendations = await prods
-												.find({ primary_category_id: {$regex : re}})
-												.toArray();
+	req.session.cache.recomendations = await Products.find({ primary_category_id: {$regex : re}});
+												
 	req.session.cache.recomendations = req.session.cache.recomendations
 												.slice(0,6)
 												.filter(item =>
@@ -103,7 +91,8 @@ exports.oneProduct = async function(req, res) {
 	//create variation of colors and sizes
 	//if no size variations - put "ALL SIZE" to an according color
 	let variations = {}
-	if(target.variation_attributes) {
+	
+	if(target.variation_attributes.length !== 0) {
 		if(target.variation_attributes.length>1){
 			target.variation_attributes[0].values.forEach(va => {
 				let temp_chart = []

@@ -1,18 +1,24 @@
 <% layout('../../layout') -%>
 
 
-<%  
+<%
+    console.log("item:", item)
     const get_color_value = (color) =>{
         return item.variation_attributes[0]
                 .values
                 .filter(ent =>{
                     return ent.name == color
                 })[0].value
-}
-    if(item.variation_attributes) {
-        
-        const images = item.image_groups
-                .filter(ent => ( ent.view_type=="large" && ent.variation_value == get_color_value(color)))
+    }
+
+
+    if(item.variation_attributes.length!==0) {
+        <!-- console.log("get_color_value(color) = ",get_color_value(color)) -->
+        var images = item.image_groups.filter(ent => {
+                    return ent.view_type=="large" && ent.variation_value == get_color_value(color)
+                })
+        <!-- console.log("images:", images) -->
+
     }
 %>
   
@@ -21,7 +27,8 @@
     <!-- <div class="card-preview-big "> -->
         <div class="mix-container ">
             <div class=" w50 column-container">
-                <% if(item.variation_attributes) { %>   
+                <% if(item.variation_attributes.length!==0) { %> 
+                    <!-- <% console.log("item.variation_attributes.length: ",item.variation_attributes.length)%>   -->
                     <% if(link){ %>
                         <img src="/images/<%=link%>" alt="<%=item.page_title%>">
                     <% } else {%> 
@@ -36,7 +43,7 @@
                 <% } %>
                 <div >
                     <ul class="small-padded row-container size-chart no-list">
-                        <% if(item.variation_attributes) { %>
+                        <% if(item.variation_attributes.length !== 0) { %>
                             <% if (images.length > 0 && images[0].images.length>1) {%>
                                 <% _.each(images[0].images, function(img) { %>
                                     <li>
@@ -54,7 +61,7 @@
                 <p>Price: $&nbsp;<%=item.price.toFixed(2)%></p>
                 <p class="small-padded "><%- item.long_description %></p>
                 <div class="">
-                    <% if (item.variation_attributes) { %>
+                    <% if (item.variation_attributes.length !== 0) { %>
                         <div class="column-container ">
                             <div class=" lightgrey orange small-margined 
                                         small-padded styled-text "
@@ -70,9 +77,8 @@
                                 <% console.log("variations[color] :",variations[color])%>
                                 <% _.each(variations[color], function(value) { %>
                                     <li >
-                                        <form class="form-inline-float " method="POST" action="/shop/<%=breadcrumbs
-                                                        .slice(1,breadcrumbs.length)
-                                                        .join('/')%>">
+                                        <form class="form-inline-float " method="POST" action="/products/<%=item.id%>
+                                                        ">
                                             <input type="hidden" name="size"  value="<%=value%>" >
                                             <button type="submit" name="id" value="<%=value%>"  class="show-more-btn lightgrey-b centered-b"><%=value%></button>
                                         </form>
@@ -95,9 +101,7 @@
                                 <% _.each(variations, function(value,name) { %>
                                         <% if(value.length > 0 ) { %>
                                             <li >
-                                                <form class="form-inline-float " method="POST" action="/shop/<%=breadcrumbs
-                                                                .slice(1,breadcrumbs.length)
-                                                                .join('/')%>">
+                                                <form class="form-inline-float " method="POST" action="/products/<%=item.id%>">
                                                     <input type="hidden" name="color"  value="<%=name%>" >
                                                     <button type="submit" name="id" value="<%=name%>"  class="show-more-btn lightgrey-b centered-b"><%=name%></button>
                                                 </form>
